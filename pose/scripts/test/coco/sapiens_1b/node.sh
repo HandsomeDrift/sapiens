@@ -1,8 +1,13 @@
+# 修改
+REPO_ROOT="$(cd "$(dirname "$0")"/../../../../.. && pwd)"
+export PYTHONPATH="$REPO_ROOT/pretrain:$REPO_ROOT/pose:$PYTHONPATH"
+
 cd ../../../..
 
 ###--------------------------------------------------------------
 # DEVICES=0,
-DEVICES=0,1,2,3,4,5,6,7,
+# DEVICES=0,1,2,3,4,5,6,7,
+DEVICES=2,3,4,5,6,7,
 
 RUN_FILE='./tools/dist_test.sh'
 PORT=$(( ((RANDOM<<15)|RANDOM) % 63001 + 2000 ))
@@ -12,9 +17,11 @@ PORT=$(( ((RANDOM<<15)|RANDOM) % 63001 + 2000 ))
 DATASET='coco'
 MODEL="sapiens_1b-210e_${DATASET}-1024x768"
 JOB_NAME="test_pose_whole_$MODEL"
-TEST_BATCH_SIZE_PER_GPU=32
+TEST_BATCH_SIZE_PER_GPU=1
 
-CHECKPOINT="/home/$USER/sapiens_host/pose/checkpoints/sapiens_1b/sapiens_1b_coco_best_coco_AP_821.pth"
+# CHECKPOINT="/home/$USER/sapiens_host/pose/checkpoints/sapiens_1b/sapiens_1b_coco_best_coco_AP_821.pth"
+# 修改
+CHECKPOINT="/data/xiangxiantong/sapiens_lite_host/torchscript/pose/checkpoints/sapiens_1b/sapiens_1b_coco_best_coco_AP_821.pth"
 
 #---------------------------------------------------------------
 # mode='debug'

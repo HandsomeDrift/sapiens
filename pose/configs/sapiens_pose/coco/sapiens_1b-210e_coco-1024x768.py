@@ -12,7 +12,9 @@ _base_ = ['../../_base_/default_runtime.py']
 model_name = 'sapiens_1b'; embed_dim=1536; num_layers=40
 # model_name = 'sapiens_2b'; embed_dim=1920; num_layers=48
 
-pretrained_checkpoint='../pretrain/checkpoints/sapiens_1b/sapiens_1b_epoch_173_clean.pth' 
+# pretrained_checkpoint='../pretrain/checkpoints/sapiens_1b/sapiens_1b_epoch_173_clean.pth' 
+# 修改
+pretrained_checkpoint="/data/xiangxiantong/sapiens_lite_host/torchscript/pretrain/checkpoints/sapiens_1b/sapiens_1b_epoch_173_clean.pth"
 
 ##-----------------------------------------------------------------
 # evaluate_every_n_epochs = 10 ## default
@@ -26,7 +28,9 @@ patch_size=16
 num_keypoints=17
 num_epochs=210
 
-bbox_file='data/coco/person_detection_results/COCO_val2017_detections_AP_H_70_person.json'
+# bbox_file='data/coco/person_detection_results/COCO_val2017_detections_AP_H_70_person.json'
+# 修改
+bbox_file='/data-nxs/xiangxiantong/fine-tuning_data/person_detection_results/COCO_val2017_detections_AP_H_70_person.json'
 # runtime
 train_cfg = dict(max_epochs=num_epochs, val_interval=evaluate_every_n_epochs)
 
@@ -159,7 +163,9 @@ val_pipeline = [
 # datasets
 dataset_coco = dict(
     type='CocoDataset',
-    data_root='data/coco',
+    # data_root='data/coco',
+    # 修改
+    data_root='/data-nxs/xiangxiantong/fine-tuning_data',
     data_mode='topdown',
     ann_file='annotations/person_keypoints_train2017.json',
     data_prefix=dict(img='train2017/'),
@@ -183,17 +189,21 @@ val_dataloader = dict(
     batch_size=32,
     num_workers=4,
     persistent_workers=True,
-    drop_last=False,
+    drop_last=True,
     sampler=dict(type='DefaultSampler', shuffle=False, round_up=False),
     dataset=dict(
         type='CocoDataset',
-        data_root='data/coco',
+        # data_root='data/coco',
+        # 修改
+        data_root='/data-nxs/xiangxiantong/fine-tuning_data',
         data_mode='topdown',
         ann_file='annotations/person_keypoints_val2017.json',
         bbox_file=bbox_file,
         data_prefix=dict(img='val2017/'),
         test_mode=True,
         pipeline=val_pipeline,
+        # 修改
+        # indices=list(range(0, 5000)),
     ))
 
 test_dataloader = val_dataloader
@@ -201,5 +211,9 @@ test_dataloader = val_dataloader
 # evaluators
 val_evaluator = dict(
     type='CocoMetric',
-    ann_file='data/coco/annotations/person_keypoints_val2017.json')
+    # ann_file='data/coco/annotations/person_keypoints_val2017.json')
+    # 修改
+    ann_file='/data-nxs/xiangxiantong/fine-tuning_data/annotations/person_keypoints_val2017.json',
+    collect_device="cpu",
+    )
 test_evaluator = val_evaluator

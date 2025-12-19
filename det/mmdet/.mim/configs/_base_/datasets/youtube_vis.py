@@ -1,3 +1,9 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree.
+
 dataset_type = 'YouTubeVISDataset'
 data_root = 'data/youtube_vis_2019/'
 dataset_version = data_root[-5:-1]  # 2019 or 2021

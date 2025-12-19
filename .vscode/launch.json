@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "SAGE-Pose (Single GPU Debug)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/pose/tools/train.py",
+      "args": [
+        "${workspaceFolder}/pose/configs/sapiens_pose/semisup/stage1_sagepose_semi.py",
+        "--launcher", "none",
+        // 下面把你原来 node_semi.sh 里给的 cfg-options 补回来：
+        // "--cfg-options", "model.student.backbone.init_cfg.type=Pretrained", ...
+      ],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/pretrain:${env:PYTHONPATH}",
+        "CUDA_VISIBLE_DEVICES": "1",
+        "CUDA_LAUNCH_BLOCKING": "1",
+        "TORCH_SHOW_CPP_STACKTRACES": "1"
+      },
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    }
+  ]
+}

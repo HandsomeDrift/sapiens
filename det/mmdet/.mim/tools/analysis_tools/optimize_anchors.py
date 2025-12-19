@@ -1,3 +1,9 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree.
+
 """Optimize anchor settings on a specific dataset.
 
 This script provides two method to optimize YOLO anchors including k-means

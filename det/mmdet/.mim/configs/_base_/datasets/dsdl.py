@@ -1,3 +1,9 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree.
+
 dataset_type = 'DSDLDetDataset'
 data_root = 'path to dataset folder'
 train_ann = 'path to train yaml file'

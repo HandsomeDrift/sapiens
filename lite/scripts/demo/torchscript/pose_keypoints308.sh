@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd ../../.. || exit
-SAPIENS_CHECKPOINT_ROOT=/home/${USER}/sapiens_lite_host
+SAPIENS_CHECKPOINT_ROOT=/data/${USER}/sapiens_lite_host
 
 MODE='torchscript' ## original. no optimizations (slow). full precision inference.
 # MODE='bfloat16' ## A100 gpus. faster inference at bfloat16
@@ -9,8 +9,10 @@ MODE='torchscript' ## original. no optimizations (slow). full precision inferenc
 SAPIENS_CHECKPOINT_ROOT=$SAPIENS_CHECKPOINT_ROOT/$MODE
 
 #----------------------------set your input and output directories----------------------------------------------
-INPUT='../pose/demo/data/itw_videos/reel1'
-OUTPUT="/home/${USER}/Desktop/sapiens/pose/Outputs/vis/itw_videos/reel1_pose308"
+# INPUT='../pose/demo/data/itw_videos/reel1'
+INPUT='/data/xiangxiantong/reach_to_eat_typical/20250305/MDA-A017-2-20230127152231991-4th/2t_right右手'
+# OUTPUT="/home/${USER}/sapiens/pose/Outputs/vis/itw_videos/reel1_pose308"
+OUTPUT="/home/${USER}/sapiens/pose/Outputs/vis/itw_videos/2t_right_pose308"
 
 #--------------------------MODEL CARD---------------
 # MODEL_NAME='sapiens_0.3b'; CHECKPOINT=$SAPIENS_CHECKPOINT_ROOT/pose/checkpoints/sapiens_0.3b/sapiens_0.3b_goliath_best_goliath_AP_573_$MODE.pt2

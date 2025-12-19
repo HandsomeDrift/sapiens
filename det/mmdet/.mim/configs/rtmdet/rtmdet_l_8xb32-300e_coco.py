@@ -1,3 +1,9 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree.
+
 _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_1x.py',
     '../_base_/datasets/coco_detection.py', './rtmdet_tta.py'

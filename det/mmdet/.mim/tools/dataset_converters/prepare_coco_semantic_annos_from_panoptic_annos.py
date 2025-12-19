@@ -1,3 +1,9 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree.
+
 # Modified from https://github.com/facebookresearch/Mask2Former/blob/main/datasets/prepare_coco_semantic_annos_from_panoptic_annos.py # noqa
 
 import argparse

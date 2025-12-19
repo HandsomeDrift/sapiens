@@ -1,3 +1,9 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree.
+
 tta_model = dict(
     type='DetTTAModel',
     tta_cfg=dict(nms=dict(type='nms', iou_threshold=0.6), max_per_img=100))
