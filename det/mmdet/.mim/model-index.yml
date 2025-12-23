@@ -1,2 +1,1 @@
-Import:
-  - configs/rtmdet/metafile.yml
+../../model-index.yml

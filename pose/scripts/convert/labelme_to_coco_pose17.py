@@ -5,6 +5,15 @@ import shutil
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+'''
+python pose/scripts/convert/labelme_to_coco_pose17.py \
+    --input-root /data/xxt/sapiens_data/MDA-A058_to_A069 \
+    --output-root /data/xxt/sapiens_data \
+    --train-ratio 0.9 --seed 42 \
+    --copy-mode copy \
+    --flat-images
+'''
+
 
 COCO17_ORDER = [
     "nose",

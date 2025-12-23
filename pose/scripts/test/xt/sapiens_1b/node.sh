@@ -19,7 +19,7 @@ JOB_NAME="test_pose_${MODEL}"
 TEST_BATCH_SIZE_PER_GPU=1
 
 # Path to your finetuned checkpoint
-CHECKPOINT="/data/xiangxiantong/sapiens_lite_host/torchscript/pose/checkpoints/sapiens_1b/sapiens_1b_coco_best_coco_AP_821.pth"
+CHECKPOINT="/data/xxt/sapiens_lite_host/pose/checkpoints/sapiens_1b/sapiens_1b_coco_best_coco_AP_821.pth"
 
 ###--------------------------------------------------------------
 # mode='debug'

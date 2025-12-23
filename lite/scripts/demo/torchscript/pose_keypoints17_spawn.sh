@@ -34,13 +34,14 @@ KPT_THRES=0.3 ## confidence threshold
 
 ##-------------------------------------inference-------------------------------------
 RUN_FILE='demo/vis_pose.py'
+PY_WRAP="import multiprocessing as mp; mp.set_start_method('spawn', force=True); import sys; sys.path.insert(0, 'demo'); import runpy; runpy.run_path('demo/vis_pose.py', run_name='__main__')"
 
 ## number of inference jobs per gpu, total number of gpus and gpu ids
 # JOBS_PER_GPU=1; TOTAL_GPUS=8; VALID_GPU_IDS=(0 1 2 3 4 5 6 7)
 # JOBS_PER_GPU=1; TOTAL_GPUS=6; VALID_GPU_IDS=(0 1 2 3 4 5)
 JOBS_PER_GPU=1; TOTAL_GPUS=1; VALID_GPU_IDS=(1)
 
-BATCH_SIZE=1
+BATCH_SIZE=8
 
 # Find all images and sort them, then write to a temporary text file
 IMAGE_LIST="${INPUT}/image_list.txt"
@@ -65,6 +66,13 @@ else
 fi
 
 export TF_CPP_MIN_LOG_LEVEL=2
+export PYTHONFAULTHANDLER=1
+export OMP_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export NUMEXPR_NUM_THREADS=1
+export PYTHONPATH="${PWD}/demo:${PYTHONPATH}"
+
 echo "Distributing ${NUM_IMAGES} image paths into ${TOTAL_JOBS} jobs."
 
 # Divide image paths into text files for each job
@@ -82,7 +90,7 @@ done
 # Run the process on the GPUs, allowing multiple jobs per GPU
 for ((i=0; i<TOTAL_JOBS; i++)); do
   GPU_ID=$((i % TOTAL_GPUS))
-  CUDA_VISIBLE_DEVICES=${VALID_GPU_IDS[GPU_ID]} python ${RUN_FILE} \
+  CUDA_VISIBLE_DEVICES=${VALID_GPU_IDS[GPU_ID]} python -u -c "${PY_WRAP}" \
     ${CHECKPOINT} \
     --num_keypoints 17 \
     --det-config ${DETECTION_CONFIG_FILE} \

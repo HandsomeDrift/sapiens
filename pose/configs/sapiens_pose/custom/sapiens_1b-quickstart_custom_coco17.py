@@ -7,7 +7,7 @@ model_name = 'sapiens_1b'
 embed_dim = 1536
 num_layers = 40
 
-pretrained_checkpoint = '/path/to/sapiens_1b_checkpoint.pth'
+pretrained_checkpoint = '/data/xxt/sapiens_lite_host/pretrain/checkpoints/sapiens_1b/sapiens_1b_epoch_173_clean.pth'
 
 evaluate_every_n_epochs = 1
 image_size = [768, 1024]  # width x height
@@ -17,7 +17,7 @@ patch_size = 16
 num_keypoints = 17
 num_epochs = 60
 
-data_root = '/path/to/your_dataset'
+data_root = '/data/xxt/sapiens_data'
 
 train_cfg = dict(max_epochs=num_epochs, val_interval=evaluate_every_n_epochs)
 
@@ -169,7 +169,7 @@ val_dataloader = dict(
         ann_file='annotations/person_keypoints_xt_val.json',
         data_prefix=dict(img='xt_val/'),
         test_mode=True,
-        bbox_file=f'{data_root}/person_detection_results/COCO_xt_val_detections_AP_H_70_person.json',
+        bbox_file=f'{data_root}/person_detection_results/xt_val_detections_AP_H_70_person.json',
         pipeline=val_pipeline,
     ),
 )
