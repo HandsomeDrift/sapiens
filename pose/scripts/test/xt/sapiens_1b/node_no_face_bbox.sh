@@ -7,7 +7,7 @@ cd ../../../..
 
 ###--------------------------------------------------------------
 # DEVICES=0,
-DEVICES=1,
+DEVICES=2,
 
 RUN_FILE='./tools/dist_test.sh'
 PORT=$(( ((RANDOM<<15)|RANDOM) % 63001 + 2000 ))
@@ -20,6 +20,8 @@ TEST_BATCH_SIZE_PER_GPU=1
 
 # Path to your finetuned checkpoint
 CHECKPOINT="/data/xxt/sapiens_lite_host/torchscript/pose/checkpoints/sapiens_1b/sapiens_1b_coco_best_coco_AP_821.pth"
+DATA_ROOT="/data/xxt/sapiens_data"
+KEEP_INDICES="5,6,7,8,9,10,11,12,13,14,15,16"
 
 ###--------------------------------------------------------------
 # mode='debug'
@@ -33,7 +35,11 @@ OUTPUT_DIR="$(echo "${OUTPUT_DIR}/$(date +"%m-%d-%Y_%H:%M:%S")")"
 export TF_CPP_MIN_LOG_LEVEL=2
 
 ## set the options for the test
-OPTIONS="$(echo "test_dataloader.batch_size=$TEST_BATCH_SIZE_PER_GPU")"
+OPTIONS="$(echo "test_dataloader.batch_size=$TEST_BATCH_SIZE_PER_GPU \
+test_evaluator.format_only=True \
+test_evaluator.outfile_prefix=${OUTPUT_DIR}/preds \
+test_evaluator.nms_mode=none \
+test_evaluator.score_mode=bbox")"
 
 ##--------------------------------------------------------------
 ## if mode is multi-gpu, then run the following
@@ -58,3 +64,15 @@ elif [ "$mode" = "multi-gpu" ]; then
             | tee ${LOG_FILE}
 
 fi
+
+python tools/eval_coco_subset.py \
+    --ann-file "${DATA_ROOT}/annotations/person_keypoints_xt_val.json" \
+    --pred-file "${OUTPUT_DIR}/preds.keypoints.json" \
+    --keep-indices "${KEEP_INDICES}" \
+    --sigmas-file "configs/_base_/datasets/coco.py" \
+    --score-mode bbox_keypoint \
+    --pred-score-mode bbox \
+    --keypoint-score-thr 0.2 \
+    --nms-mode oks_nms \
+    --nms-thr 0.9 \
+    --output-metrics "${OUTPUT_DIR}/metrics_body_no_face.json"
