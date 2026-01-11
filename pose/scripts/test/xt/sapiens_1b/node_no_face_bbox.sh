@@ -7,7 +7,7 @@ cd ../../../..
 
 ###--------------------------------------------------------------
 # DEVICES=0,
-DEVICES=2,
+DEVICES=1,
 
 RUN_FILE='./tools/dist_test.sh'
 PORT=$(( ((RANDOM<<15)|RANDOM) % 63001 + 2000 ))
@@ -66,7 +66,7 @@ elif [ "$mode" = "multi-gpu" ]; then
 fi
 
 python tools/eval_coco_subset.py \
-    --ann-file "${DATA_ROOT}/annotations/person_keypoints_xt_val.json" \
+    --ann-file "${DATA_ROOT}/annotations/person_keypoints_xt_train.json" \
     --pred-file "${OUTPUT_DIR}/preds.keypoints.json" \
     --keep-indices "${KEEP_INDICES}" \
     --sigmas-file "configs/_base_/datasets/coco.py" \

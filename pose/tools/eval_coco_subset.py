@@ -179,6 +179,7 @@ def main() -> None:
         json.dump(preds, f)
 
     sigma_arr = np.array(sigmas, dtype=np.float32)[keep_indices]
+
     rescored = []
     for pred in preds:
         keypoints = np.array(pred["keypoints"], dtype=np.float32).reshape(-1, 3)

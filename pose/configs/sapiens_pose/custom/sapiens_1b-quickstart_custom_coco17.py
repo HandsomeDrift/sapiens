@@ -166,10 +166,10 @@ val_dataloader = dict(
         type='CocoDataset',
         data_root=data_root,
         data_mode='topdown',
-        ann_file='annotations/person_keypoints_xt_val.json',
-        data_prefix=dict(img='xt_val/'),
+        ann_file='annotations/person_keypoints_xt_train.json',
+        data_prefix=dict(img='xt_train/'),
         test_mode=True,
-        bbox_file=f'{data_root}/person_detection_results/xt_val_detections_AP_H_70_person.json',
+        bbox_file=f'{data_root}/person_detection_results/xt_train_detections_AP_H_70_person.json',
         pipeline=val_pipeline,
     ),
 )
@@ -178,7 +178,7 @@ test_dataloader = val_dataloader
 
 val_evaluator = dict(
     type='CocoMetric',
-    ann_file=f'{data_root}/annotations/person_keypoints_xt_val.json',
+    ann_file=f'{data_root}/annotations/person_keypoints_xt_train.json',
     collect_device='cpu',
 )
 

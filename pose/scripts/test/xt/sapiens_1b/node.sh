@@ -7,7 +7,7 @@ cd ../../../..
 
 ###--------------------------------------------------------------
 # DEVICES=0,
-DEVICES=1,
+DEVICES=2,
 
 RUN_FILE='./tools/dist_test.sh'
 PORT=$(( ((RANDOM<<15)|RANDOM) % 63001 + 2000 ))
