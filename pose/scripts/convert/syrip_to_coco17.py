@@ -3,12 +3,12 @@
 Convert SyRIP to COCO17 with train/val/test splits.
 
 Example:
-  python pose/scripts/convert/syrip_to_coco17.py \
-    --source-root /data/SyRIP \
-    --output-root /data/syrip_coco17 \
-    --output-prefix syrip \
-    --val-ratio 0.1 --seed 42 \
-    --copy-mode symlink
+python pose/scripts/convert/syrip_to_coco17.py \
+  --source-root /data/xxt/sapiens_data/SyRIP \
+  --output-root /data/xxt/sapiens_data/syrip_coco17 \
+  --output-prefix syrip \
+  --val-ratio 0.1 --seed 42 \
+  --copy-mode copy
 """
 from __future__ import annotations
 
