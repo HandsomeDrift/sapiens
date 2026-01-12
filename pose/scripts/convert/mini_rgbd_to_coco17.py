@@ -3,12 +3,12 @@
 Convert MINI-RGBD to COCO17 keypoints with train/val/test splits.
 
 Example:
-  python pose/scripts/convert/mini_rgbd_to_coco17.py \
-    --source-root /data/MINI-RGBD \
-    --output-root /data/mini_rgbd_coco17 \
-    --split train2017=01-08 val2017=09-10 test2017=11-12 \
-    --output-prefix mini_rgbd \
-    --copy-mode symlink
+python pose/scripts/convert/mini_rgbd_to_coco17.py \
+  --source-root /data/xxt/sapiens_data/MINI-RGBD_web \
+  --output-root /data/xxt/sapiens_data/mini_rgbd_coco17 \
+  --split train2017=01-08 val2017=09-10 test2017=11-12 \
+  --output-prefix mini_rgbd \
+  --copy-mode copy
 """
 from __future__ import annotations
 
