@@ -7,12 +7,12 @@ from mmdet.apis import inference_detector, init_detector
 
 '''
 python pose/scripts/convert/generate_person_dets.py \
-    --ann-file /data/xxt/sapiens_data/annotations/person_keypoints_xt_train.json \
-    --data-root /data/xxt/sapiens_data \
-    --image-prefix xt_train \
+    --ann-file /data/xxt/sapiens_data/syrip_coco17/annotations/person_keypoints_syrip_val2017.json \
+    --data-root /data/xxt/sapiens_data/syrip_coco17 \
+    --image-prefix syrip_val2017 \
     --det-config pose/demo/mmdetection_cfg/rtmdet_m_640-8xb32_coco-person_no_nms.py \
     --det-checkpoint /data/xxt/sapiens_lite_host/torchscript/detector/checkpoints/rtmpose/rtmdet_m_8xb32-100e_coco-obj365-person-235e8209.pth \
-    --out /data/xxt/sapiens_data/person_detection_results/xt_train_detections_AP_H_70_person.json \
+    --out /data/xxt/sapiens_data/syrip_coco17/person_detection_results/syrip_val_detections_AP_H_70_person.json \
     --score-thr 0.3 \
     --device cuda:1
 '''
