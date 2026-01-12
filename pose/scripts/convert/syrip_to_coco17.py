@@ -86,7 +86,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--test-images-dir",
         type=Path,
-        default=Path("images/validate_infnat"),
+        default=Path("images/validate_infant"),
     )
     parser.add_argument("--val-ratio", type=float, default=0.1)
     parser.add_argument("--seed", type=int, default=42)
