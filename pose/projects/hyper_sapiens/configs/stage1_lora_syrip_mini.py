@@ -101,7 +101,6 @@ model = dict(
             with_cls_token=False,
             out_type='featmap',
             patch_cfg=dict(padding=2),
-            with_cp=True,
             init_cfg=dict(type='Pretrained', checkpoint=pretrained_checkpoint),
         ),
         alpha=16,
