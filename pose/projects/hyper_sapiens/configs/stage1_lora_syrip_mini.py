@@ -53,6 +53,7 @@ optim_wrapper = dict(
     ),
     constructor='LoRALayerDecayOptimWrapperConstructor',
     clip_grad=dict(max_norm=1., norm_type=2),
+    accumulative_counts=4,  # effective batch = batch_size * num_gpus * accum = 1*2*4 = 8
 )
 
 # ---------- LR scheduler ----------
@@ -164,7 +165,7 @@ dataset_mini_rgbd = dict(
 )
 
 train_dataloader = dict(
-    batch_size=2,
+    batch_size=1,
     num_workers=4,
     persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=True),
