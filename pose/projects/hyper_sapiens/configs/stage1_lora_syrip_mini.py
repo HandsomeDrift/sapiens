@@ -134,15 +134,6 @@ train_pipeline = [
     dict(type='RandomBBoxTransform'),
     dict(type='TopdownAffine', input_size=codec['input_size'], use_udp=True),
     dict(type='PhotometricDistortion'),
-    dict(
-        type='Albumentation',
-        transforms=[
-            dict(type='Blur', p=0.1),
-            dict(type='MedianBlur', p=0.1),
-            dict(type='CoarseDropout',
-                 max_holes=1, max_height=0.4, max_width=0.4,
-                 min_holes=1, min_height=0.2, min_width=0.2, p=1.0),
-        ]),
     dict(type='GenerateTarget', encoder=codec),
     dict(type='PackPoseInputs'),
 ]
