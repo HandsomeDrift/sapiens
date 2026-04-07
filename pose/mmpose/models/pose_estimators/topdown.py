@@ -90,7 +90,7 @@ class TopdownPoseEstimator(BasePoseEstimator):
             losses.update(loss)
 
         ## preds is B x 17 x 192 x 144
-        return losses, preds
+        return losses
 
     def train_step(self, data: Union[dict, tuple, list],
                    optim_wrapper: OptimWrapper) -> Dict[str, torch.Tensor]:
@@ -118,7 +118,7 @@ class TopdownPoseEstimator(BasePoseEstimator):
         # Enable automatic mixed precision training context.
         with optim_wrapper.optim_context(self):
             data = self.data_preprocessor(data, True)
-            losses, preds = self._run_forward(data, mode='loss')  # type: ignore
+            losses = self._run_forward(data, mode='loss')  # type: ignore
         parsed_losses, log_vars = self.parse_losses(losses)  # type: ignore
 
         optim_wrapper.update_params(parsed_losses)
