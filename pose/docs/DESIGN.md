@@ -346,33 +346,39 @@ pose/semisup/
 └── utils/pseudo_label.py              # 教师融合 + 动态掩码 → 可复用
 ```
 
-### 8.2 待实现模块
+### 8.2 已实现模块
 
 ```
 pose/projects/hyper_sapiens/
 ├── __init__.py
 ├── engine/
-│   └── lora_layer_decay_constructor.py    # LoRA 优化器构造器
-├── models/
-│   ├── hyper_wrapper.py                   # 主 wrapper: LoRA backbone + 3 heads
-│   ├── depth_head.py                      # 深度解码器
-│   └── normal_head.py                     # 法线解码器
-├── ddp_prior/
-│   ├── ddp_model.py                       # 骨架 DDPM 网络（残差 MLP + 时间嵌入）
-│   └── sds_loss.py                        # SDS 损失
-├── losses/
-│   └── geo_consistency.py                 # 深度-法线一致性 + 骨长比例
-├── vlm/
-│   ├── pose_quality_assessor.py           # VLM 质量评估器
-│   └── vlm_filter.py                      # 伪标签过滤管线
-├── data/
-│   └── mixed_dataset.py                   # 合成+真实混合数据集
-└── configs/
-    ├── lora_rank8_sapiens1b_stage1.py     # LoRA 配置
-    ├── full_finetune_sapiens1b_stage1.py  # 全量微调对比
-    ├── stage1_synthetic_warmup.py         # 阶段一
-    ├── stage2_bridged_transfer.py         # 阶段二
-    └── stage3_real_refinement.py          # 阶段三
+│   └── lora_layer_decay_constructor.py    # ✅ LoRA 优化器构造器（适配 layer decay + LoRA 参数分组）
+├── rl/                                    # ✅ GRPO 姿态群组优化（对接 DeepSeek-R1 GRPO）
+│   ├── reward.py                          #    复合解剖学奖励函数（骨长 + 关节角 + 对称性）
+│   └── grpo_pose.py                       #    热图采样 + group advantage + 策略梯度损失
+├── agents/                                # ✅ 多 Agent 标注质量管线（工具调用 + 协作决策）
+│   ├── tools.py                           #    PoseDetectionTool / VLMAssessmentTool / StructuralValidationTool
+│   ├── orchestrator.py                    #    QualityOrchestrator（三 Agent 协调 + 决策聚合）
+│   └── run_quality_pipeline.py            #    CLI 入口
+├── models/                                # ✅ 多头跨模态解码器
+│   ├── hyper_wrapper.py                   #    主 wrapper: LoRA backbone + 3 heads + 课程学习调度
+│   ├── depth_head.py                      #    相对深度预测头（SILog 损失）
+│   └── normal_head.py                     #    表面法线预测头（cosine 损失）
+├── ddp_prior/                             # ✅ 扩散驱动先验
+│   ├── ddp_model.py                       #    骨架 DDPM（残差 MLP + 时间嵌入）
+│   └── sds_loss.py                        #    Score Distillation Sampling 损失
+├── losses/                                # ✅ 几何一致性约束
+│   └── geo_consistency.py                 #    深度-法线一致性 + 尺度不变骨长比例
+├── tools/
+│   ├── verify_lora.py                     # ✅ LoRA 集成验证
+│   └── compute_skeleton_stats.py          # ✅ 骨架统计先验计算
+├── stats/
+│   └── skeleton_stats_coco17.json         # ✅ COCO17 骨架统计（从 262K 标注计算）
+└── configs/                               # 待编写
+    ├── lora_rank8_sapiens1b_stage1.py
+    ├── stage1_synthetic_warmup.py
+    ├── stage2_bridged_transfer.py
+    └── stage3_real_refinement.py
 ```
 
 ---
@@ -420,13 +426,18 @@ pose/projects/hyper_sapiens/
 
 | 本项目组件 | 大模型对应概念 | 面试叙事 |
 |-----------|--------------|---------|
-| LoRA on Sapiens ViT (1B params) | PEFT / 参数高效微调 | "与 LLM LoRA 完全同构，0.2% 可训参数，50 倍参数压缩" |
-| DDP 扩散先验 + SDS 损失 | Score-based 生成式先验 | "SDS 源自 DreamFusion，扩散模型作为动态正则化" |
-| 多头 Pose+Depth+Normal 联合训练 | 跨模态表征对齐 | "类 CLIP 原理，共享编码器在统一特征空间对齐三种模态" |
-| KPS / DDP 质量评分 | Reward Model | "类 RLHF 奖励模型，评估输出的解剖学合理性" |
-| VLM 姿态质量评估 | VLM-in-the-Loop / 多模态应用 | "集成 Qwen2-VL 作为伪标签奖励模型" |
+| **GRPO 姿态群组优化** | **RL 对齐 / GRPO** | "将 DeepSeek-R1 的 GRPO 引入视觉任务，热图采样+解剖学奖励+group advantage" |
+| **多 Agent 质量管线** | **Agent + Tool Use** | "三 Agent 协作（Pose/VLM/Structural），原生 function calling，自动化伪标签筛选" |
+| LoRA on Sapiens ViT (1B) | PEFT / 参数高效微调 | "与 LLM LoRA 同构，0.2% 可训参数，50 倍参数压缩" |
+| 多头 Pose+Depth+Normal | 跨模态表征对齐 | "类 CLIP 原理，共享编码器对齐三种模态" |
+| DDP 扩散先验 + SDS 损失 | Score-based 生成式先验 / Reward Model | "SDS 源自 DreamFusion，扩散模型作为动态奖励信号" |
+| VLM 姿态质量评估 | VLM-in-the-Loop / 多模态应用 | "集成 Qwen2-VL 作为多模态 Reward Model" |
 | 三阶段课程学习 | Foundation Model 训练策略 | "类 Pre-train → SFT → RLHF 的渐进式适配" |
 | 整体项目 | 低资源基础模型领域适配 | "1B 参数视觉基础模型在 <1000 样本下的 Sim-to-Real 迁移" |
+
+**简历描述（中文）**：
+
+"基于 Meta Sapiens 视觉基础模型（1B 参数）的领域适配框架。核心创新：(1) 将 GRPO 群组相对优化引入视觉姿态估计，通过解剖学奖励函数实现无需人工标注的 RL 对齐；(2) 设计多 Agent 数据质量控制系统（Pose Agent + VLM Agent + Structural Validator），基于工具调用与协作决策实现自动化伪标签筛选；(3) LoRA 高效微调（0.2% 可训参数）+ 跨模态几何对齐（Pose/Depth/Normal 多任务学习）+ 扩散生成式先验（SDS 损失）。在极小样本（<1000 真实标注）下实现高效 Sim-to-Real 迁移。"
 
 ## 附录 C：合成数据增强策略
 
