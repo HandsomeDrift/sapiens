@@ -123,7 +123,6 @@ class TopdownPoseEstimator(BasePoseEstimator):
 
         optim_wrapper.update_params(parsed_losses)
 
-        log_vars['vis_preds'] = preds
         return log_vars
 
     ## from mmengine. The loss spike handling is done here.
