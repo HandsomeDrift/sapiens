@@ -24,7 +24,7 @@ data_root_syrip = '/data/xxt/sapiens_data/syrip_coco17'
 data_root_mini = '/data/xxt/sapiens_data/mini_rgbd_coco17'
 
 # ---------- Training ----------
-image_size = [768, 1024]  # width x height
+image_size = [576, 768]  # width x height (reduced for single-GPU training)
 sigma = 6
 scale = 4
 patch_size = 16
@@ -163,7 +163,7 @@ dataset_mini_rgbd = dict(
 )
 
 train_dataloader = dict(
-    batch_size=4,
+    batch_size=2,
     num_workers=4,
     persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=True),
