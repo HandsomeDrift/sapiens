@@ -69,6 +69,7 @@ auto_scale_lr = dict(base_batch_size=512)
 default_hooks = dict(
     checkpoint=dict(save_best='coco/AP', rule='greater', max_keep_ckpts=3),
     logger=dict(type='LoggerHook', interval=10),
+    visualization=dict(type='PoseVisualizationHook', enable=False),
 )
 
 # ---------- Codec ----------
