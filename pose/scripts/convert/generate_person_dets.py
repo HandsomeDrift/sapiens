@@ -106,10 +106,16 @@ def main():
     )
 
     results = []
+    skipped = 0
     for idx, img_info in enumerate(images, 1):
         if idx % 50 == 0 or idx == len(images):
             print(f"[{idx}/{len(images)}] {img_info['path']}")
-        pred = inference_detector(model, img_info["path"])
+        try:
+            pred = inference_detector(model, img_info["path"])
+        except Exception as e:
+            print(f"  SKIP {img_info['path']}: {e}")
+            skipped += 1
+            continue
         # mmdet returns list per class; person is class 0 for COCO
         bboxes = pred.pred_instances.bboxes
         scores = pred.pred_instances.scores
@@ -134,6 +140,8 @@ def main():
     with args.out.open("w") as f:
         json.dump(results, f)
     print(f"Saved {len(results)} detections to {args.out}")
+    if skipped:
+        print(f"WARNING: skipped {skipped} images due to errors")
 
 
 if __name__ == "__main__":
